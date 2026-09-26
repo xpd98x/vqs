@@ -1,0 +1,23 @@
+name: Kick Bot
+
+on:
+  workflow_dispatch:
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+
+      - name: Run app
+        env:
+          KICK_TOKEN: ${{ secrets.KICK_TOKEN }}
+        run: node app.js
