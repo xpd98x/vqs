@@ -11,9 +11,10 @@ async function getChatroomId() {
   const url = `https://kick.com/api/v2/channels/${CHANNEL}/chatroom`;
 
   const response = await fetch(url, {
+    method: "GET",
     headers: {
-      Authorization: `Bearer ${TOKEN}`,
-      Accept: "application/json",
+      "Accept": "application/json",
+      "Authorization": `Bearer ${TOKEN}`,
       "User-Agent": "Mozilla/5.0"
     }
   });
@@ -28,12 +29,13 @@ async function getChatroomId() {
 
   const data = JSON.parse(text);
 
-  const chatroomId =
-    data?.chatroom?.id ??
-    data?.data?.chatroom?.id;
+  // Kick بيرجع الـid مباشرة
+  const chatroomId = data?.id;
 
   if (!chatroomId) {
-    throw new Error(`chatroom_id not found:\n${JSON.stringify(data)}`);
+    throw new Error(
+      `chatroom_id not found:\n${JSON.stringify(data)}`
+    );
   }
 
   return chatroomId;
@@ -46,9 +48,9 @@ async function sendMessage(chatroomId) {
   const response = await fetch(url, {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${TOKEN}`,
-      Accept: "application/json",
+      "Accept": "application/json",
       "Content-Type": "application/json",
+      "Authorization": `Bearer ${TOKEN}`,
       "User-Agent": "Mozilla/5.0"
     },
     body: JSON.stringify({
@@ -61,11 +63,14 @@ async function sendMessage(chatroomId) {
   const text = await response.text();
 
   console.log(
-    new Date().toISOString(),
-    "status:",
-    response.status,
-    text
+    `${new Date().toISOString()} | HTTP ${response.status} | ${text}`
   );
+
+  if (response.status === 429) {
+    console.log("Kick rate limit reached. Waiting 60 seconds...");
+    await sleep(60_000);
+    return;
+  }
 
   if (!response.ok) {
     throw new Error(`Send failed: ${response.status} ${text}`);
@@ -75,16 +80,20 @@ async function sendMessage(chatroomId) {
 async function main() {
   const chatroomId = await getChatroomId();
 
-  console.log("Chatroom ID:", chatroomId);
+  console.log(`Channel: ${CHANNEL}`);
+  console.log(`Chatroom ID: ${chatroomId}`);
   console.log("Bot started.");
 
   while (true) {
     try {
       await sendMessage(chatroomId);
     } catch (error) {
-      console.error(error.message);
+      console.error(
+        `${new Date().toISOString()} | ${error.message}`
+      );
     }
 
+    // كل 10 ثواني
     await sleep(10_000);
   }
 }
