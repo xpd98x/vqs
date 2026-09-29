@@ -6,9 +6,9 @@ const http = require('http');
 const https = require('https');
 
 const TARGETS = [
-  'https://tmsahff.com/store',
-  'https://tmsahff.com/',
-  'https://tmsahff.com/leaderboard'
+  'https://corleoneonline.com/',
+  'https://corleoneonline.com/',
+  'https://corleoneonline.com/'
 ];
 
 const DURATION = (parseInt(process.argv[2] || '60', 10)) * 1000;
