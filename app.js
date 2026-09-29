@@ -6,8 +6,8 @@ const http = require('http');
 const https = require('https');
 
 const TARGETS = [
-  'https://corleoneonline.com/',
-  'https://auto.powerdiva98.workers.dev',
+  'https://tmsahff.com/',
+  'https://tmsahff.com/',
   'https://tmsahff.com/'
 ];
 
